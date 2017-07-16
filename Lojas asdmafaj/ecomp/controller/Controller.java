@@ -40,11 +40,17 @@ public class Controller {
 	}
 	
 	public boolean novaMercadoria(String lote, String end, String bloco, String numero, String fornce, String data, String hr){
+		
 		Produto novo = new Produto(lote,end,bloco,numero,fornce);
 		novo.setData(data);
 		novo.setHora(hr);
-		arvore.inserir(novo);
-		return true;
+		
+		if (acharProdutoPorCoda(lote,end,bloco,numero,fornce) == null){
+			arvore.inserir(novo);	
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean escreverNoarquivo(Produto caixa, String sFileName) throws IOException{		
@@ -80,7 +86,7 @@ public class Controller {
 		BufferedWriter buffer = null;
 		try {		
 			buffer = new BufferedWriter(new FileWriter(file, true)); 
-			//BufferedWriter buffer = new Files.newBufferedWriter(Paths.get(file)); Se n„o funcionar tenta essa
+			//BufferedWriter buffer = new Files.newBufferedWriter(Paths.get(file)); Se n√£o funcionar tenta essa
 			arvore.escreverArvore(buffer);
 			return true;		
 		} catch (IOException e1) {
